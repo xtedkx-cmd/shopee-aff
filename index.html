@@ -26,7 +26,6 @@ body {
     padding: 15px;
     font-weight: bold;
     text-align: center;
-    z-index: 100;
 }
 
 /* CONTAINER */
@@ -74,7 +73,6 @@ button {
 
 #result {
     margin-top: 10px;
-    color: green;
     word-break: break-all;
 }
 
@@ -111,7 +109,7 @@ button {
     border-radius:12px;
 }
 
-/* 📱 MOBILE (giống app) */
+/* MOBILE */
 @media (max-width:600px){
     .container {
         max-width:100%;
@@ -128,7 +126,7 @@ button {
     }
 }
 
-/* 💻 DESKTOP (căn giữa đẹp hơn) */
+/* DESKTOP */
 @media (min-width:768px){
     body {
         background:#eee;
@@ -192,6 +190,7 @@ button {
 <script>
 let finalLink = "";
 
+// DÁN LINK
 async function paste() {
     try {
         const text = await navigator.clipboard.readText();
@@ -201,6 +200,7 @@ async function paste() {
     }
 }
 
+// TẠO LINK
 function createLink() {
     let input = document.getElementById("linkInput").value.trim();
 
@@ -209,9 +209,14 @@ function createLink() {
     let base = "https://shopee.vn/universal-link?af_siteid=17180360000&af_sub_siteid=web&deep_link=";
     let affiliate = base + encodeURIComponent(input);
 
-finalLink = affiliate;
-document.getElementById("result").innerText = affiliate;
+    finalLink = affiliate;
 
+    // hiển thị link đẹp hơn
+    document.getElementById("result").innerHTML =
+        '<a href="'+affiliate+'" target="_blank">'+affiliate+'</a>';
+}
+
+// COPY LINK
 function copyLink() {
     if (!finalLink) return alert("Chưa có link!");
 
@@ -219,6 +224,7 @@ function copyLink() {
     alert("Đã copy!");
 }
 
+// QUAY LẠI FACEBOOK
 function goBack(){
     if(document.referrer){
         window.location.href = document.referrer;
