@@ -8,102 +8,189 @@
 <style>
 body {
     margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #ff512f, #dd2476);
     font-family: Arial;
+    background: #f5f5f5;
+    padding: 15px;
 }
 
+.container {
+    max-width: 500px;
+    margin: auto;
+}
+
+/* CARD */
 .card {
     background: #fff;
-    padding: 25px;
-    border-radius: 16px;
-    width: 95%;
-    max-width: 420px;
-    text-align: center;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-    animation: fadeIn 0.6s ease;
-}
-
-@keyframes fadeIn {
-    from {opacity: 0; transform: translateY(20px);}
-    to {opacity: 1; transform: translateY(0);}
-}
-
-.logo {
-    font-size: 22px;
-    font-weight: bold;
-    color: #ee4d2d;
+    border-radius: 14px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     margin-bottom: 15px;
 }
 
-.input-group {
+/* HEADER */
+.header {
     display: flex;
-    gap: 6px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    color: #ee4d2d;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.sub {
+    color: #666;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* INPUT */
+.input-box {
+    margin-top: 15px;
+    display: flex;
+    gap: 8px;
 }
 
 input {
     flex: 1;
     padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
 }
 
+/* BUTTON */
 button {
     border: none;
+    border-radius: 10px;
     padding: 12px;
-    border-radius: 8px;
-    color: #fff;
     cursor: pointer;
     font-weight: bold;
 }
 
-.paste { background: #6c757d; }
-.convert { background: #ee4d2d; width: 100%; margin-top: 10px;}
-.copy { background: #28a745; width: 100%; margin-top: 10px;}
-
-#status {
-    margin-top: 10px;
-    font-size: 14px;
+.paste {
+    background: #ff6a00;
+    color: white;
 }
 
-.success { color: green; }
-.error { color: red; }
+.create {
+    width: 100%;
+    background: #ee4d2d;
+    color: white;
+    margin-top: 10px;
+}
 
+.copy {
+    width: 100%;
+    background: #28a745;
+    color: white;
+    margin-top: 10px;
+}
+
+/* RESULT */
 #result {
     margin-top: 10px;
-    word-break: break-all;
     font-size: 14px;
+    word-break: break-all;
+    color: green;
+}
+
+/* GUIDE */
+.step {
+    display: flex;
+    margin: 10px 0;
+}
+
+.number {
+    width: 25px;
+    height: 25px;
+    background: #ee4d2d;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 25px;
+    margin-right: 10px;
+    font-size: 13px;
+}
+
+.fb-btn {
+    background: #1877f2;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* MOBILE */
+@media (max-width: 500px) {
+    body { padding: 10px; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-    <div class="logo">🛒 Shopee Affiliate Tool</div>
+<div class="container">
 
-    <div class="input-group">
-        <input id="linkInput" placeholder="Dán link Shopee..." />
-        <button class="paste" onclick="paste()">📥</button>
+    <!-- CARD TẠO LINK -->
+    <div class="card">
+        <div class="header">
+            <div>
+                <div class="title">Tạo link</div>
+                <div class="sub">Dán link Shopee để tạo link affiliate</div>
+            </div>
+            <div style="color:#ee4d2d;font-weight:bold;">Shopee</div>
+        </div>
+
+        <div class="input-box">
+            <input id="linkInput" placeholder="Dán link Shopee vào đây..." />
+            <button class="paste" onclick="paste()">Dán</button>
+        </div>
+
+        <button class="create" onclick="createLink()">Tạo link</button>
+
+        <div id="result"></div>
+
+        <button class="copy" onclick="copyLink()">Copy link</button>
     </div>
 
-    <button class="convert" onclick="convert()">Tạo link affiliate</button>
+    <!-- FB BUTTON -->
+    <div class="card">
+        <div class="fb-btn">📘 Đến bài đăng Facebook</div>
+    </div>
 
-    <div id="status"></div>
-    <div id="result"></div>
+    <!-- HƯỚNG DẪN -->
+    <div class="card">
+        <b>Hướng dẫn</b>
 
-    <button class="copy" onclick="copy()">📋 Copy link</button>
+        <div class="step">
+            <div class="number">1</div>
+            <div>Dán link rồi nhấn tạo link</div>
+        </div>
+
+        <div class="step">
+            <div class="number">2</div>
+            <div>Dán link vào Facebook hoặc gửi khách</div>
+        </div>
+
+        <div class="step">
+            <div class="number">3</div>
+            <div>Khách click & mua để nhận hoa hồng</div>
+        </div>
+
+        <div class="step">
+            <div class="number">4</div>
+            <div>Mỗi sản phẩm cần tạo link riêng</div>
+        </div>
+    </div>
+
 </div>
 
 <script>
 let finalLink = "";
-
-function isShopeeLink(url) {
-    return url.includes("shopee.vn") || url.includes("shp.ee");
-}
 
 async function paste() {
     try {
@@ -114,23 +201,15 @@ async function paste() {
     }
 }
 
-function convert() {
+function createLink() {
     let input = document.getElementById("linkInput").value.trim();
-    let status = document.getElementById("status");
 
     if (!input) {
-        status.innerHTML = "<span class='error'>⚠️ Nhập link trước</span>";
+        alert("Nhập link trước!");
         return;
     }
 
-    if (!isShopeeLink(input)) {
-        status.innerHTML = "<span class='error'>❌ Không phải link Shopee</span>";
-        return;
-    }
-
-    status.innerHTML = "⏳ Đang xử lý...";
-
-    let base = "https://shopee.vn/universal-link?af_siteid=YOUR_ID&af_sub_siteid=YOUR_SUB_ID&deep_link=";
+    let base = "https://shopee.vn/universal-link?af_siteid=17180360000&af_sub_siteid=web&deep_link=";
     let affiliate = base + encodeURIComponent(input);
 
     fetch("https://tinyurl.com/api-create.php?url=" + encodeURIComponent(affiliate))
@@ -138,23 +217,21 @@ function convert() {
     .then(shortUrl => {
         finalLink = shortUrl;
         document.getElementById("result").innerText = shortUrl;
-        status.innerHTML = "<span class='success'>✅ Thành công</span>";
     })
     .catch(() => {
         finalLink = affiliate;
         document.getElementById("result").innerText = affiliate;
-        status.innerHTML = "<span class='success'>✅ Tạo link (không rút gọn)</span>";
     });
 }
 
-function copy() {
+function copyLink() {
     if (!finalLink) {
         alert("Chưa có link!");
         return;
     }
 
     navigator.clipboard.writeText(finalLink).then(() => {
-        alert("📋 Đã copy!");
+        alert("Đã copy!");
     });
 }
 </script>
