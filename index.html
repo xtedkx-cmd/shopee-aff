@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopee Affiliate Tool</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ff512f, #dd2476);
+    font-family: Arial;
+}
+
+.card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 16px;
+    width: 95%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ee4d2d;
+    margin-bottom: 15px;
+}
+
+.input-group {
+    display: flex;
+    gap: 6px;
+}
+
+input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+button {
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.paste { background: #6c757d; }
+.convert { background: #ee4d2d; width: 100%; margin-top: 10px;}
+.copy { background: #28a745; width: 100%; margin-top: 10px;}
+
+#status {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.success { color: green; }
+.error { color: red; }
+
+#result {
+    margin-top: 10px;
+    word-break: break-all;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <div class="logo">🛒 Shopee Affiliate Tool</div>
+
+    <div class="input-group">
+        <input id="linkInput" placeholder="Dán link Shopee..." />
+        <button class="paste" onclick="paste()">📥</button>
+    </div>
+
+    <button class="convert" onclick="convert()">Tạo link affiliate</button>
+
+    <div id="status"></div>
+    <div id="result"></div>
+
+    <button class="copy" onclick="copy()">📋 Copy link</button>
+</div>
+
+<script>
+let finalLink = "";
+
+function isShopeeLink(url) {
+    return url.includes("shopee.vn") || url.includes("shp.ee");
+}
+
+async function paste() {
+    try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById("linkInput").value = text;
+    } catch {
+        alert("Không dán được!");
+    }
+}
+
+function convert() {
+    let input = document.getElementById("linkInput").value.trim();
+    let status = document.getElementById("status");
+
+    if (!input) {
+        status.innerHTML = "<span class='error'>⚠️ Nhập link trước</span>";
+        return;
+    }
+
+    if (!isShopeeLink(input)) {
+        status.innerHTML = "<span class='error'>❌ Không phải link Shopee</span>";
+        return;
+    }
+
+    status.innerHTML = "⏳ Đang xử lý...";
+
+    let base = "https://shopee.vn/universal-link?af_siteid=YOUR_ID&af_sub_siteid=YOUR_SUB_ID&deep_link=";
+    let affiliate = base + encodeURIComponent(input);
+
+    fetch("https://tinyurl.com/api-create.php?url=" + encodeURIComponent(affiliate))
+    .then(res => res.text())
+    .then(shortUrl => {
+        finalLink = shortUrl;
+        document.getElementById("result").innerText = shortUrl;
+        status.innerHTML = "<span class='success'>✅ Thành công</span>";
+    })
+    .catch(() => {
+        finalLink = affiliate;
+        document.getElementById("result").innerText = affiliate;
+        status.innerHTML = "<span class='success'>✅ Tạo link (không rút gọn)</span>";
+    });
+}
+
+function copy() {
+    if (!finalLink) {
+        alert("Chưa có link!");
+        return;
+    }
+
+    navigator.clipboard.writeText(finalLink).then(() => {
+        alert("📋 Đã copy!");
+    });
+}
+</script>
+
+</body>
+</html>
