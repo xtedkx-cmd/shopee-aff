@@ -1,199 +1,192 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <!-- Facebook Preview -->
 <meta property="og:title" content="🔥 Mã giảm giá Shopee 25% - Giảm tới 1TR">
 <meta property="og:description" content="Click để lấy mã giảm giá Shopee mới nhất hôm nay">
 <meta property="og:image" content="https://i.ibb.co/4gDTxR4k/voucher.jpg">
-<meta property="og:url" content="">
 <meta property="og:type" content="website">
+
 <style>
 body {
     margin: 0;
     font-family: Arial;
     background: #f5f5f5;
-    padding: 15px;
 }
 
+/* HEADER */
+.topbar {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(135deg,#ff6a00,#ee4d2d);
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 100;
+}
+
+/* CONTAINER */
 .container {
-    max-width: 100%;
+    max-width: 600px;
     margin: auto;
+    padding: 15px;
 }
 
 /* CARD */
 .card {
-    background: #fff;
+    background: white;
     border-radius: 14px;
     padding: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     margin-bottom: 15px;
-}
-
-/* HEADER */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.title {
-    color: #ee4d2d;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.sub {
-    color: #666;
-    font-size: 13px;
-    margin-top: 5px;
 }
 
 /* INPUT */
 .input-box {
-    margin-top: 15px;
     display: flex;
     gap: 8px;
+    margin-top: 10px;
 }
 
 input {
     flex: 1;
-    padding: 12px;
+    padding: 14px;
     border-radius: 10px;
     border: 1px solid #ddd;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 /* BUTTON */
 button {
     border: none;
     border-radius: 10px;
-    padding: 12px;
-    cursor: pointer;
+    padding: 14px;
     font-weight: bold;
+    cursor: pointer;
 }
 
-.paste {
-    background: #ff6a00;
-    color: white;
-}
+.paste { background:#999; color:white; }
+.create { background:#ee4d2d; color:white; width:100%; margin-top:10px;}
+.copy { background:#28a745; color:white; width:100%; margin-top:10px;}
 
-.create {
-    width: 100%;
-    background: #ee4d2d;
-    color: white;
-    margin-top: 10px;
-}
-
-.copy {
-    width: 100%;
-    background: #28a745;
-    color: white;
-    margin-top: 10px;
-}
-
-/* RESULT */
 #result {
     margin-top: 10px;
-    font-size: 14px;
-    word-break: break-all;
     color: green;
+    word-break: break-all;
+}
+
+/* FB BUTTON */
+.fb-btn {
+    background:#1877f2;
+    color:white;
+    padding:14px;
+    border-radius:10px;
+    text-align:center;
+    font-weight:bold;
 }
 
 /* GUIDE */
 .step {
-    display: flex;
-    margin: 10px 0;
+    display:flex;
+    margin:10px 0;
 }
 
 .number {
-    width: 25px;
-    height: 25px;
-    background: #ee4d2d;
-    color: white;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 25px;
-    margin-right: 10px;
-    font-size: 13px;
+    width:25px;
+    height:25px;
+    background:#ee4d2d;
+    color:white;
+    border-radius:50%;
+    text-align:center;
+    line-height:25px;
+    margin-right:10px;
 }
 
-.fb-btn {
-    background: #1877f2;
-    color: white;
-    text-align: center;
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: bold;
+/* IMAGE */
+.full-img {
+    width:100%;
+    border-radius:12px;
 }
 
-/* MOBILE */
-@media (max-width: 500px) {
-    body { padding: 10px; }
+/* 📱 MOBILE (giống app) */
+@media (max-width:600px){
+    .container {
+        max-width:100%;
+        padding:10px;
+    }
+
+    .card {
+        border-radius:10px;
+        padding:12px;
+    }
+
+    button, input {
+        font-size:16px;
+    }
+}
+
+/* 💻 DESKTOP (căn giữa đẹp hơn) */
+@media (min-width:768px){
+    body {
+        background:#eee;
+    }
+
+    .container {
+        max-width:500px;
+        background:#fff;
+        padding:20px;
+        border-radius:20px;
+        margin-top:30px;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<div class="topbar">🛒 Shopee Mã Giảm Giá</div>
+
 <div class="container">
 
-    <!-- CARD TẠO LINK -->
-    <div class="card">
-        <div class="header">
-            <div>
-                <div class="title">Tạo link</div>
-                <div class="sub">Dán link Shopee để tạo mã giảm giá</div>
-            </div>
-            <div style="color:#ee4d2d;font-weight:bold;">Shopee</div>
-        </div>
-
-        <div class="input-box">
-            <input id="linkInput" placeholder="Dán link Shopee vào đây..." />
-            <button class="paste" onclick="paste()">Dán</button>
-        </div>
-
-        <button class="create" onclick="createLink()">Tạo link</button>
-
-        <div id="result"></div>
-
-        <button class="copy" onclick="copyLink()">Copy link</button>
-    </div>
-
-    <!-- FB BUTTON -->
-    <div class="card">
-        <div class="fb-btn">📘 Đến bài đăng Facebook</div>
-    </div>
-
-    <!-- HƯỚNG DẪN -->
-    <div class="card">
-        <b>Hướng dẫn</b>
-
-        <div class="step">
-            <div class="number">1</div>
-            <div>Dán link rồi nhấn tạo link</div>
-        </div>
-
-        <div class="step">
-            <div class="number">2</div>
-            <div>Nhấn coppy link và comment vào bài viết</div>
-        </div>
-
-        <div class="step">
-            <div class="number">3</div>
-            <div>Nhấn vào link trong comment của mình để lấy mã</div>
-        </div>
-
-        <div class="step">
-            <div class="number">4</div>
-            <div>Mỗi sản phẩm cần tạo link riêng</div>
-        </div>
-    </div>
+<!-- TOOL -->
 <div class="card">
-    <div style="font-weight:bold; margin-bottom:10px;">🎁 Mã giảm giá</div>
-    
-    <img src="https://i.ibb.co/Zp96PNpf/screenshot-1774591589.png" 
-     style="width:100%; border-radius:12px;">
+    <b>Tạo link affiliate</b>
+
+    <div class="input-box">
+        <input id="linkInput" placeholder="Dán link Shopee..." />
+        <button class="paste" onclick="paste()">Dán</button>
+    </div>
+
+    <button class="create" onclick="createLink()">Tạo link</button>
+
+    <div id="result"></div>
+
+    <button class="copy" onclick="copyLink()">Copy link</button>
 </div>
+
+<!-- FB -->
+<div class="card">
+    <div class="fb-btn" onclick="goBack()">📘 Quay lại Facebook</div>
+</div>
+
+<!-- GUIDE -->
+<div class="card">
+    <b>Hướng dẫn</b>
+
+    <div class="step"><div class="number">1</div><div>Dán link Shopee</div></div>
+    <div class="step"><div class="number">2</div><div>Tạo link & copy</div></div>
+    <div class="step"><div class="number">3</div><div>Comment vào bài viết</div></div>
+</div>
+
+<!-- VOUCHER -->
+<div class="card">
+    <b>🎁 Mã giảm giá</b>
+    <img class="full-img" src="https://i.ibb.co/Zp96PNpf/screenshot-1774591589.png">
+</div>
+
 </div>
 
 <script>
@@ -211,10 +204,7 @@ async function paste() {
 function createLink() {
     let input = document.getElementById("linkInput").value.trim();
 
-    if (!input) {
-        alert("Nhập link trước!");
-        return;
-    }
+    if (!input) return alert("Nhập link!");
 
     let base = "https://shopee.vn/universal-link?af_siteid=17180360000&af_sub_siteid=web&deep_link=";
     let affiliate = base + encodeURIComponent(input);
@@ -225,21 +215,25 @@ function createLink() {
         finalLink = shortUrl;
         document.getElementById("result").innerText = shortUrl;
     })
-    .catch(() => {
+    .catch(()=>{
         finalLink = affiliate;
         document.getElementById("result").innerText = affiliate;
     });
 }
 
 function copyLink() {
-    if (!finalLink) {
-        alert("Chưa có link!");
-        return;
-    }
+    if (!finalLink) return alert("Chưa có link!");
 
-    navigator.clipboard.writeText(finalLink).then(() => {
-        alert("Đã copy!");
-    });
+    navigator.clipboard.writeText(finalLink);
+    alert("Đã copy!");
+}
+
+function goBack(){
+    if(document.referrer){
+        window.location.href = document.referrer;
+    }else{
+        window.location.href = "https://facebook.com";
+    }
 }
 </script>
 
