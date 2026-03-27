@@ -196,24 +196,18 @@ function createLink() {
     let input = document.getElementById("linkInput").value.trim();
     if (!input) return alert("Nhập link!");
 
+    // 🔥 BỎ extraParams (QUAN TRỌNG)
+    let cleanLink = input.split("?")[0];
+
     let base = "https://shopee.vn/universal-link?af_siteid=17180360000&af_sub_siteid=web&deep_link=";
 
-    // 🔥 làm sạch + encode chuẩn
-    let clean = decodeURIComponent(input);
-    let affiliate = base + encodeURIComponent(clean);
+    // encode chuẩn
+    let affiliate = base + encodeURIComponent(cleanLink);
 
-    // 🔥 rút gọn link
-    fetch("https://tinyurl.com/api-create.php?url=" + encodeURIComponent(affiliate))
-    .then(res => res.text())
-    .then(shortUrl => {
-        finalLink = shortUrl;
-        document.getElementById("result").innerHTML =
-            '<a href="'+shortUrl+'" target="_blank">'+shortUrl+'</a>';
-    })
-    .catch(() => {
-        finalLink = affiliate;
-        document.getElementById("result").innerText = affiliate;
-    });
+    finalLink = affiliate;
+
+    document.getElementById("result").innerHTML =
+        '<a href="'+affiliate+'" target="_blank">'+affiliate+'</a>';
 }
 
 // COPY
