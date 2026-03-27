@@ -196,18 +196,29 @@ function createLink() {
     let input = document.getElementById("linkInput").value.trim();
     if (!input) return alert("Nhập link!");
 
-    // 🔥 BỎ extraParams (QUAN TRỌNG)
-    let cleanLink = input.split("?")[0];
+    // 1. Làm sạch link: Loại bỏ các tham số rác nếu có
+    let cleanUrl = input.split('?')[0]; 
+    
+    // 2. Base URL cho Shopee Universal Link
+    // Thay vì deep_link, hãy dùng tham số 'url'
+    let base = "https://shopee.vn/universal-link?url=";
+    let affiliateParams = "&af_siteid=17180360000&af_sub_siteid=web";
 
-    let base = "https://shopee.vn/universal-link?af_siteid=17180360000&af_sub_siteid=web&deep_link=";
+    // 3. Kết hợp và Encode
+    let fullAffiliateUrl = base + encodeURIComponent(input) + affiliateParams;
 
-    // encode chuẩn
-    let affiliate = base + encodeURIComponent(cleanLink);
-
-    finalLink = affiliate;
-
-    document.getElementById("result").innerHTML =
-        '<a href="'+affiliate+'" target="_blank">'+affiliate+'</a>';
+    // 4. Rút gọn link
+    fetch("https://tinyurl.com/api-create.php?url=" + encodeURIComponent(fullAffiliateUrl))
+    .then(res => res.text())
+    .then(shortUrl => {
+        finalLink = shortUrl;
+        document.getElementById("result").innerHTML =
+            '<a href="'+shortUrl+'" target="_blank">'+shortUrl+'</a>';
+    })
+    .catch(() => {
+        finalLink = fullAffiliateUrl;
+        document.getElementById("result").innerText = fullAffiliateUrl;
+    });
 }
 
 // COPY
