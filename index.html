@@ -209,17 +209,8 @@ function createLink() {
     let base = "https://shopee.vn/universal-link?af_siteid=17180360000&af_sub_siteid=web&deep_link=";
     let affiliate = base + encodeURIComponent(input);
 
-    fetch("https://tinyurl.com/api-create.php?url=" + encodeURIComponent(affiliate))
-    .then(res => res.text())
-    .then(shortUrl => {
-        finalLink = shortUrl;
-        document.getElementById("result").innerText = shortUrl;
-    })
-    .catch(()=>{
-        finalLink = affiliate;
-        document.getElementById("result").innerText = affiliate;
-    });
-}
+finalLink = affiliate;
+document.getElementById("result").innerText = affiliate;
 
 function copyLink() {
     if (!finalLink) return alert("Chưa có link!");
