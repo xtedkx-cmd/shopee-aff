@@ -86,37 +86,34 @@ function generateLink() {
     const input = document.getElementById("urlInput").value.trim();
     if (!input) return alert("Vui lòng nhập link!");
 
-    // Loại bỏ mọi tham số tracking cũ (?sp_atk...)
-    let cleanBase = input.split('?')[0];
+    // 1. Làm sạch link: Giải mã và bỏ mọi thứ sau dấu hỏi
+    let decodedUrl = decodeURIComponent(input).split('?')[0];
 
-    // Giải mã để xử lý ký tự tiếng Việt nếu có
-    let decoded = decodeURIComponent(cleanBase);
-
-    // Dùng Regex tìm Shop ID và Product ID (định dạng i.123.456)
+    // 2. Dùng Regex bóc tách ID sản phẩm (Cực kỳ quan trọng)
     const idPattern = /i\.(\d+)\.(\d+)/;
-    const match = decoded.match(idPattern);
+    const match = decodedUrl.match(idPattern);
 
-    let finalProductUrl = cleanBase;
-
+    let targetUrl = "";
     if (match) {
-        // Nếu tìm thấy ID, đưa về cấu trúc ngắn nhất mà Shopee vẫn hiểu
-        // Định dạng: https://shopee.vn/product/SHOP_ID/PRODUCT_ID
-        finalProductUrl = `https://shopee.vn/product/${match[1]}/${match[2]}`;
+        // Nếu là link sản phẩm, đưa về dạng chuẩn không thể sai
+        targetUrl = `https://shopee.vn/product/${match[1]}/${match[2]}`;
+    } else {
+        // Nếu không phải link sản phẩm (link shop, link trang chủ...), giữ nguyên link đã xóa rác
+        targetUrl = decodedUrl;
     }
 
-    // Đóng gói vào Universal Link
+    // 3. Thông số Affiliate của bạn
     const af_siteid = "17180360000";
     const af_sub = "web";
-    const encodedTarget = encodeURIComponent(finalProductUrl);
-
-    globalAffiliateLink = `https://shopee.vn/universal-link?af_siteid=${af_siteid}&af_sub_siteid=${af_sub}&pid=custom_link&deep_and_web_url=${encodedTarget}`;
+    
+    // 4. Đóng gói (Sử dụng tham số 'url' phối hợp 'deep_and_web_url' để tăng tỷ lệ mở App)
+    const encodedTarget = encodeURIComponent(targetUrl);
+    globalLink = `https://shopee.vn/universal-link?af_siteid=${af_siteid}&af_sub_siteid=${af_sub}&pid=custom_link&url=${encodedTarget}&deep_and_web_url=${encodedTarget}`;
 
     // Hiển thị kết quả
     document.getElementById("resultArea").style.display = "block";
-    document.getElementById("copyBtn").style.display = "block";
-    document.getElementById("finalResult").innerText = globalAffiliateLink;
+    document.getElementById("finalLink").innerText = globalLink;
 }
-
 // 3. Sao chép kết quả
 function handleCopy() {
     if (!globalAffiliateLink) return;
