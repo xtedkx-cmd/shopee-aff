@@ -192,33 +192,89 @@ async function paste() {
 }
 
 // TẠO LINK (FIX DOUBLE ENCODE)
+let finalLink = "";
+
+async function paste() {
+    try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById("linkInput").value = text;
+    } catch (err) {
+        alert("Vui lòng dán thủ công (Trình duyệt chặn quyền truy cập clipboard).");
+    }
+}
+
+<script>
+let finalLink = "";
+
+// DÁN LINK
+async function paste() {
+    try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById("linkInput").value = text;
+    } catch {
+        alert("Không dán được! Vui lòng dán thủ công.");
+    }
+}
+
+// TẠO LINK (ĐÃ SỬA LỖI REDIRECT & BỎ RÚT GỌN)
 function createLink() {
     let input = document.getElementById("linkInput").value.trim();
-    if (!input) return alert("Nhập link!");
+    if (!input) return alert("Vui lòng nhập link!");
 
-    // 1. Làm sạch link: Loại bỏ các tham số rác nếu có
+    // 1. Làm sạch link (Chỉ lấy phần trước dấu ?, loại bỏ các tracking rác)
     let cleanUrl = input.split('?')[0]; 
     
-    // 2. Base URL cho Shopee Universal Link
-    // Thay vì deep_link, hãy dùng tham số 'url'
-    let base = "https://shopee.vn/universal-link?url=";
-    let affiliateParams = "&af_siteid=17180360000&af_sub_siteid=web";
+    // Lưu ý: Nếu bạn dán link dạng shp.ee (link rút gọn từ app), 
+    // universal-link có thể không tự giải mã được. Tốt nhất nên dùng link dạng shopee.vn/...
+    
+    // 2. Nối link affiliate chuẩn của Shopee (Dùng deep_and_web_url thay vì url)
+    let encodedUrl = encodeURIComponent(cleanUrl);
+    
+    // Cấu trúc chuẩn để nhảy đúng vào sản phẩm gốc trên cả Web và App
+    let fullAffiliateUrl = `https://shopee.vn/universal-link?af_siteid=17180360000&af_sub_siteid=web&pid=custom_link&deep_and_web_url=${encodedUrl}`;
 
-    // 3. Kết hợp và Encode
-    let fullAffiliateUrl = base + encodeURIComponent(input) + affiliateParams;
+    // 3. Xuất link trực tiếp, không qua rút gọn
+    finalLink = fullAffiliateUrl;
+    
+    document.getElementById("result").innerHTML = 
+        `<div style="margin-top:15px; padding:10px; background:#e9ecef; border-radius:8px; font-size: 13px;">
+            <strong>Link của bạn:</strong><br><br>
+            <a href="${finalLink}" target="_blank">${finalLink}</a>
+        </div>`;
+}
 
-    // 4. Rút gọn link
-    fetch("https://tinyurl.com/api-create.php?url=" + encodeURIComponent(fullAffiliateUrl))
-    .then(res => res.text())
-    .then(shortUrl => {
-        finalLink = shortUrl;
-        document.getElementById("result").innerHTML =
-            '<a href="'+shortUrl+'" target="_blank">'+shortUrl+'</a>';
-    })
-    .catch(() => {
-        finalLink = fullAffiliateUrl;
-        document.getElementById("result").innerText = fullAffiliateUrl;
+// COPY
+function copyLink() {
+    if (!finalLink) return alert("Chưa có link để copy!");
+    
+    navigator.clipboard.writeText(finalLink).then(() => {
+        alert("Đã copy thành công!");
+    }).catch(() => {
+        alert("Trình duyệt chặn copy. Vui lòng bôi đen và copy thủ công.");
     });
+}
+
+// BACK FB
+function goBack(){
+    if(document.referrer){
+        window.location.href = document.referrer;
+    }else{
+        window.location.href = "https://facebook.com";
+    }
+}
+</script>
+function copyLink() {
+    if (!finalLink) return alert("Chưa có link để copy!");
+    
+    navigator.clipboard.writeText(finalLink).then(() => {
+        alert("Đã copy thành công!");
+    }).catch(() => {
+        alert("Lỗi khi copy. Vui lòng chọn và copy thủ công.");
+    });
+}
+
+function goBack(){
+    window.location.href = document.referrer || "https://facebook.com";
 }
 
 // COPY
